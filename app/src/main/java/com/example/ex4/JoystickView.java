@@ -11,18 +11,30 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+/**
+ * JoystickView class.
+ * extends SurfaceView,implements SurfaceHolder.Callback and View.OnTouchListener.
+ */
 public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         View.OnTouchListener {
+
+    /*
+    global variables
+     */
     private float centerX;
-
     private float centerY;
-    private float baseRadius;
 
+    private float baseRadius;
     private float hatRadius;
+
     private Paint colors;
 
     private JoystickListener joystickCallback;
 
+    /**
+     * constractors. we only use the first one.
+     * @param context the activity that operate tue joystick.
+     */
     public JoystickView(Context context) {
         super(context);
         getHolder().addCallback(this);
@@ -50,6 +62,10 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
+    /**
+     * setupDimensions.
+     * initializing the global variables.
+     */
     private void setupDimensions() {
         centerX = getWidth() / 2;
         centerY = getHeight() / 2;
@@ -60,6 +76,12 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         colors = new Paint();
     }
 
+    /**
+     * drawJoystick.
+     * drawing the joystick on screen.
+     * @param newX the new location of the hat's x center value.
+     * @param newY the new location of the hat's y center value.
+     */
     private void drawJoystick(float newX, float newY) {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = this.getHolder().lockCanvas();
@@ -75,6 +97,13 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         }
     }
 
+    /**
+     * onTouch.
+     * controlling the joystick movement.
+     * @param view
+     * @param motionEvent
+     * @return
+     */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view.equals(this)) {
@@ -87,6 +116,7 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
                             (motionEvent.getX() - centerX) / baseRadius,
                             (motionEvent.getY() - centerY) / baseRadius, getId());
                 } else {
+                    /*in case the finger moves outside the base*/
                     float ratio = baseRadius / displacement;
                     float constrainedX = centerX + (motionEvent.getX() - centerX) * ratio;
                     float constrainedY = centerY + (motionEvent.getY() - centerY) * ratio;

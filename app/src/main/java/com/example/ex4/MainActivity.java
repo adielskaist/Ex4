@@ -17,8 +17,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * Connect.
+     * what happand when we press connect.
+     * @param view
+     */
     public void Connect(View view) {
-
+        /*getting the ip and port from the text box*/
         EditText editTextIp = findViewById(R.id.IP);
         EditText editTextPort = findViewById(R.id.Port);
         String IP = editTextIp.getText().toString();
